@@ -3,7 +3,6 @@ from Bio import Phylo
 from itertools import combinations
 from treeswift import read_tree_newick, read_tree_nexml, read_tree_nexus
 import dendropy
-import ete3
 import numpy
 from dendropy import TaxonNamespace
 import re
@@ -192,12 +191,18 @@ def ladderize(m):
         tree.ladderize()
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         tree.ladderize()
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         tree.ladderize()
         t_end = time()
@@ -213,12 +218,18 @@ def distance_matrix(m):
         tree.distance_matrix()
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         tree.distance_matrix()
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         tree.distance_matrix()
         t_end = time()
@@ -235,13 +246,19 @@ def inorder(m):
             pass
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_inorder():
             pass
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_inorder():
             pass
@@ -259,13 +276,19 @@ def levelorder(m):
             pass
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_levelorder():
             pass
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_levelorder():
             pass
@@ -283,13 +306,19 @@ def mrca(m):
         tree.mrca(leaves)
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         leaves = {str(l) for l in tree.traverse_leaves()}
         tree.mrca(leaves)
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         leaves = {str(l) for l in tree.traverse_leaves()}
         tree.mrca(leaves)
@@ -307,13 +336,19 @@ def postorder(m):
             pass
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_postorder():
             pass
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_postorder():
             pass
@@ -331,13 +366,21 @@ def preorder(m):
             pass
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        # NeXML returns a dictionary of trees - we need to extract one
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_preorder():
             pass
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        # Nexus also returns a dictionary of trees
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_preorder():
             pass
@@ -355,13 +398,19 @@ def rootdistorder(m):
             pass
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_rootdistorder():
             pass
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         for node in tree.traverse_rootdistorder():
             pass
@@ -378,12 +427,18 @@ def total_branch_length(m):
         tree.edge_length_sum()
         t_end = time()
     elif m == 'treeswift_nexml':
-        tree = read_tree_nexml(nexml_tree)
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         tree.edge_length_sum()
         t_end = time()
     elif m == 'treeswift_nexus':
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_start = time()
         tree.edge_length_sum()
         t_end = time()
@@ -399,11 +454,18 @@ def load_tree(m):
         t_end = time()
     elif m == 'treeswift_nexml':
         t_start = time()
+        trees_dict = read_tree_nexml(nexml_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in NeXML")
+        tree = list(trees_dict.values())[0]  # Get first tree
         tree = read_tree_nexml(nexml_tree)
         t_end = time()
     elif m == 'treeswift_nexus':
         t_start = time()
-        tree = read_tree_nexus(nexus_tree)
+        trees_dict = read_tree_nexus(nexus_tree)
+        if not trees_dict:
+            raise ValueError("No trees found in Nexus")
+        tree = list(trees_dict.values())[0]  # Get first tree
         t_end = time()
     else:
         assert False, "Invalid tool: %s"%m
