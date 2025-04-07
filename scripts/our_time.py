@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from Bio import Phylo
 from itertools import combinations
 from treeswift import read_tree_newick, read_tree_nexml, read_tree_nexus
 import dendropy
